@@ -71,6 +71,7 @@ hadoop  ALL=(ALL)       ALL
 16.2.打开路径 ~/.ssh/看到两个文件 id_rsa  id_rsa.pub
 16.3.刚开始没有文件authorized_keys执行:cat id_rsa.pub >>authorized_keys (测试 ssh localhost,如果还需要密码，
 执行权限:chmod 600 ~/.ssh/authorized_keys)
+（scp /root/.ssh/authorized_keys root@hadoop146:/root/.ssh/）
 
 16.4.注意检查/etc/ssh/sshd_config文件
 #禁用root账户登录，如果是用root用户登录请开启
@@ -81,18 +82,39 @@ PermitRootLogin yes
 StrictModes no
 # 是否允许用户自行使用成对的密钥系统进行登入行为，仅针对 version 2。
 # 至于自制的公钥数据就放置于用户家目录下的 .ssh/authorized_keys 内
+#（centos6下面是注释的）
 RSAAuthentication yes
 PubkeyAuthentication yes
 AuthorizedKeysFile      .ssh/authorized_keys
 # 有了证书登录了，就禁用密码登录吧，安全要紧
 PasswordAuthentication no #(特别是这里是否为no)
 #重启ssh服务，输入命令：
-/bin/systemctl start  sshd.service
+/bin/systemctl start sshd.service(centos7)
+service sshd start(centos6)
+
+#注意:ssh无密码连接，如果是centos6，一定需要关闭SELinux 
+vim /etc/selinux/config
+
+#改状态
+SELINUX=disabled
 
 
 17.设置centos7主机名，查看主机名:hostname
-修改:hostnamectl set-hostname <主机名> 
-使用这种方式修改，可以永久性的修改主机名称
+修改hostname有几种方式？
+
+    1：  hostname DB-Server                                   --运行后立即生效（新会话生效），但是在系统重启后会丢失所做的修改
+
+    2：  echo DB-Server  > /proc/sys/kernel/hostname          --运行后立即生效（新会话生效），但是在系统重启后会丢失所做的修改
+
+    3： sysctl kernel.hostname=DB-Server                      --运行后立即生效（新会话生效），但是在系统重启后会丢失所做的修改
+
+    4: 修改/etc/sysconfig/network下的HOSTNAME变量             --需要重启生效，永久性修改。
+
+    5: 修改:hostnamectl set-hostname <主机名>                  --使用这种方式修改，可以永久性的修改主机名称
+
+#vim /etc/sysconfig/network (centos6,修改HOSTNAME=hadoop148)
 
 18.虚拟机设置桥接时，选择对应的无线网卡，
 在虚拟机service network restart重启网络
+
+19.设置时区timedatectl set-timezone Asia/Shanghai
