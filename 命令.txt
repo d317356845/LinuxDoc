@@ -118,3 +118,20 @@ SELINUX=disabled
 在虚拟机service network restart重启网络
 
 19.设置时区timedatectl set-timezone Asia/Shanghai
+
+20.centos7设置固定(静态)ip:
+20.1.查看网络适配器:ip a
+
+lo是本地回环地址127.0.0.1
+
+eno16777736就是我们的虚拟机网卡了
+
+打开:/etc/sysconfig/network-scripts/ifcfg-eno16777736
+
+设置:
+BOOTPROTO=static
+IPADDR=192.168.0.121
+NETMASK=255.255.255.0
+GATEWAY=192.168.0.1
+
+重启网络:systemctl restart network
