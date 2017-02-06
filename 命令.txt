@@ -136,3 +136,15 @@ GATEWAY=192.168.0.1
 DNS1=192.168.0.1 #需要添加DNS，否则链接不了外网
 
 重启网络:systemctl restart network
+
+20.2.修改ubuntu14的固定IP
+vim /etc/network/interfaces
+
+service networking restart #重启网络
+
+DEVICE=eth0 # ip a可以知道哪个网卡
+BOOTPROTO=static
+IPADDR=192.168.0.121
+NETMASK=255.255.255.0
+GATEWAY=192.168.0.1
+DNS1=192.168.0.1
