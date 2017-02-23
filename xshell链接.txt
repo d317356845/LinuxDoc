@@ -6,7 +6,7 @@ sudo apt-get install openssh-server
 sudo apt-get install vim
 3.SSH服务器拒绝了密码，xshell连不上虚拟机怎么办
 应该是sshd的设置不允许root用户用密码远程登录
-修改 vi /etc/ssh/sshd_config
+修改 vim /etc/ssh/sshd_config
 找到# Authentication:
 LoginGraceTime 120
 PermitRootLogin without passwd
