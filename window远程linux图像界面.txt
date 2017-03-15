@@ -1,0 +1,10 @@
+1.apt-get install xrdp
+2.apt-get install vnc4server
+3.apt-get install xubuntu-desktop
+4.echo xfce4-session >~/.xsession
+vim /etc/xrdp/startwm.sh
+#在./etc/X11/Xsession前插入
+xfce4-session
+#重启xrdp
+cd /etc/init.d/
+./xrdp restart
