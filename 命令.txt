@@ -30,6 +30,7 @@ du -sm [文件夹] 返回该文件夹总M数
 9.查看安装路径whereis 软件名称:如 whereis vim
 10.搜索软件源中的软件yum search/search all 名称：如yum search all unzip
 11.查询进程:ps -ef | grep nginx
+	11.1查看启动进程的内容:ps -ef|grep 9990  #9990进程ID
 12.查看所有进程:ps -l
 13.查看centos版本：cat /etc/redhat-release
 
