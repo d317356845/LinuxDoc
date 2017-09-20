@@ -1,0 +1,33 @@
+1.apt-get install vsftpd  （服务端）
+1.1.apt-get -y install ftp (客户端)
+2.root连接不了是被禁用了，设置 vim /etc/ftpusers   注释#root
+3.service vsftpd restart
+4.查看ftp传输的目录 pwd
+5.上传文件：
+ftp> mput db.iso
+550 Permission denied 
+ 
+原因：vsftp默认配置不允许上传文件。
+解决：修改/etc/vsftpd.conf （ubuntu）  /etc/vsftpd/vsftpd.conf（centos）
+将“write_enable=YES”前面的#取消。   
+重启vsftp服务器。
+
+以root登录:530 Permission denied   
+打开：/etc/vsftpd/user_list  注释root #root
+登录失败:vim ftpusers 注释root #root
+
+6.put上传文件默认目录为/root
+7.ftp: connect: No route to host异常处理：
+/etc/sysconfig/iptables 添加：
+#启用21端口
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 21 -j ACCEPT
+8.ftp由win上传到linux异常：
+centos7 553 Could not create file
+处理：修改selinux
+执行getsebool -a | grep ftp 
+看到ftpd_full_access --> off  修改为on
+1. setsebool -P ftpd_disable_trans 1
+2. service vsftpd restart
+如果解决了就不要向下看了，否则往下看另一种方法
+我们需要把allow_ftpd_full_access 设置为1
+setsebool allow_ftpd_full_access 1
